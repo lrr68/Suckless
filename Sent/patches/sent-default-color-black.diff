@@ -1,0 +1,9 @@
+11,12c11
+< //Changed the default color to white on black
+< static const char *inverted_colors[] = {
+---
+> static const char *colors[] = {
+17c16
+< static const char *colors[] = {
+---
+> static const char *inverted_colors[] = {
