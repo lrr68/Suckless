@@ -1,53 +1,77 @@
-diff --git a/Dwm/config.def.h b/Dwm/config.def.h
-index e304da5..2b40d73 100644
---- a/Dwm/config.def.h
-+++ b/Dwm/config.def.h
-@@ -1,7 +1,7 @@
- /* See LICENSE file for copyright and license details. */
- 
- /* appearance */
--static const unsigned int borderpx  = 1;        /* border pixel of windows */
-+static const unsigned int borderpx  = 2;        /* border pixel of windows */
- static const unsigned int gappx     = 5;        /* gaps between windows */
- static const unsigned int snap      = 32;       /* snap pixel */
- static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-@@ -10,14 +10,14 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display
- static const int showsystray        = 1;     /* 0 means no systray */
- static const int showbar            = 1;        /* 0 means no bar */
- static const int topbar             = 1;        /* 0 means bottom bar */
--static const int focusonwheel       = 0;
--static const char *fonts[]          = { "monospace:size=10" };
--static const char dmenufont[]       = "monospace:size=10";
--static const char col_gray1[]       = "#222222";
--static const char col_gray2[]       = "#444444";
--static const char col_gray3[]       = "#bbbbbb";
--static const char col_gray4[]       = "#eeeeee";
--static const char col_cyan[]        = "#005577";
-+static const int focusonwheel       = 1;
-+static const char *fonts[]          = { "monospace:size=12" };
-+static const char dmenufont[]       = "monospace:size=12";
-+static const char col_gray1[]       = "#2586B3";/*Dark color */
-+static const char col_gray2[]       = "#B3AD2E";/*Bar background */
-+static const char col_gray3[]       = "#CCC62B";/*Light color */
-+static const char col_gray4[]       = "#FF1938";/*Bar foreground */
-+static const char col_cyan[]        = "#12B392";/*Other light color */
- static const char *colors[][3]      = {
- 	/*               fg         bg         border   */
- 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-@@ -25,7 +25,7 @@ static const char *colors[][3]      = {
- };
- 
- /* tagging */
--static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-+static const char *tags[] = { "", "", "", "4", "5", "6", "7", "8", "" };
- 
- static const Rule rules[] = {
- 	/* xprop(1):
-@@ -37,6 +37,7 @@ static const Rule rules[] = {
- 	{ "Firefox",     NULL,    NULL,       1 << 1,       0,           -1 },
- 	{ "qutebrowser", NULL,    NULL,       1 << 1,       0,           -1 },
- 	{ "Telegram",    NULL,    NULL,       1 << 3,       0,           -1 },
-+	{ "Transmission-gtk",NULL,NULL,       1 << 3,       0,           -1 },
- };
- 
- /* layout(s) */
+diff --git a/Dwm/patches/20190724.diff b/Dwm/patches/20190724.diff
+index 8a4b194..e69de29 100644
+--- a/Dwm/patches/20190724.diff
++++ b/Dwm/patches/20190724.diff
+@@ -1,72 +0,0 @@
+-diff --git a/Dwm/dwm.c b/Dwm/dwm.c
+-index 0a5b87f..7c664fe 100644
+---- a/Dwm/dwm.c
+-+++ b/Dwm/dwm.c
+-@@ -75,7 +75,6 @@
+- 
+- /* enums */
+- enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+--enum { SchemeNorm, SchemeSel }; /* color schemes */
+- enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+-        NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
+-        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+-@@ -222,6 +221,8 @@ static void resizerequest(XEvent *e);
+- static void restack(Monitor *m);
+- static void run(void);
+- static void scan(void);
+-+static void schemeCycle(const Arg*);
+-+static void schemeToggle(const Arg*);
+- static int sendevent(Window w, Atom proto, int m, long d0, long d1, long d2, long d3, long d4);
+- static void sendmon(Client *c, Monitor *m);
+- static void setclientstate(Client *c, long state);
+-@@ -299,6 +300,7 @@ static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast];
+- static int running = 1;
+- static Cur *cursor[CurLast];
+- static Clr **scheme;
+-+static int SchemeNorm = 0; SchemeSel = 1;
+- static Display *dpy;
+- static Drw *drw;
+- static Monitor *mons, *selmon;
+-@@ -1566,6 +1568,42 @@ scan(void)
+- 	}
+- }
+- 
+-+void
+-+schemeCycle(const Arg *arg) {
+-+
+-+	if ((SchemeSel + 2) < LENGTH(colors))
+-+	{
+-+		SchemeNorm += 2;
+-+		SchemeSel += 2;
+-+	} else {
+-+		SchemeNorm = 0;
+-+		SchemeSel = 1;
+-+	}
+-+
+-+	drawbars();
+-+}
+-+
+-+void
+-+schemeToggle(const Arg *arg) {
+-+
+-+	int numThemePairs = LENGTH(colors) / 4;
+-+	int sheme = SchemeNorm / 2;
+-+
+-+	if (sheme / 2 > numThemePairs-1) {
+-+		return;
+-+	}
+-+
+-+	if (sheme % 2 == 0) {
+-+		SchemeNorm += 2;
+-+		SchemeSel += 2;
+-+	} else {
+-+		SchemeNorm -= 2;
+-+		SchemeSel -= 2;
+-+	}
+-+
+-+	drawbars();
+-+}
+-+
+- void
+- sendmon(Client *c, Monitor *m)
+- {
