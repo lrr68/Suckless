@@ -1,0 +1,13 @@
+diff --git a/Dwm/config.def.h b/Dwm/config.def.h
+index 72e6b0f..57f4b3d 100644
+--- a/Dwm/config.def.h
++++ b/Dwm/config.def.h
+@@ -16,7 +16,7 @@ static const char dmenufont[]       = "monospace:size=12";
+ static const char col_gray1[]       = "#2586B3";/*Dark color */
+ static const char col_gray2[]       = "#B3AD2E";/*Bar background */
+ static const char col_gray3[]       = "#CCC62B";/*Light color */
+-static const char col_gray4[]       = "#FF4526";/*Bar foreground */
++static const char col_gray4[]       = "#FBF100";/*Bar foreground */
+ static const char col_cyan[]        = "#12B392";/*Other light color */
+ /* solarized colors http://ethanschoonover.com/solarized */
+ static const char s_base03[]        = "#002b36";
