@@ -13,8 +13,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int focusonwheel       = 1;
 static const char *fonts[]          = { "monospace:size=12" };
 static const char dmenufont[]       = "monospace:size=12";
-static const char col_gray1[]       = "#2586B3";/*Dark color */
-static const char col_gray2[]       = "#B3AD2E";/*Bar background */
+static const char col_gray1[]       = "#000000";/*Dark color */
+static const char col_gray2[]       = "#000000";/*Bar background */
 static const char col_gray3[]       = "#CCC62B";/*Light color */
 static const char col_gray4[]       = "#FBF100";/*Bar foreground */
 static const char col_cyan[]        = "#12B392";/*Other light color */
@@ -30,13 +30,13 @@ static const char s_base3[]         = "#fdf6e3";
 
 
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
+	/*fg       bg         border   */
+	{ col_gray3, col_gray1, col_gray2 }, /* SchemeNorm orig */
+	{ col_gray4, col_cyan,  col_cyan  }, /* SchemeSel orig */
 	{ s_base0, s_base03, s_base2 },      /* SchemeNorm dark */
 	{ s_base0, s_base02, s_base2 },      /* SchemeSel dark */
 	{ s_base00, s_base3, s_base02 },     /* SchemeNorm light */
 	{ s_base00, s_base2, s_base02},      /* SchemeSel light */
-	{ col_gray3, col_gray1, col_gray2 }, /* SchemeNorm orig */
-	{ col_gray4, col_cyan,  col_cyan  }, /* SchemeSel orig */
 };
 
 /* tagging */
@@ -47,12 +47,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",        NULL,    NULL,       1 << 2,       0,           -1 },
-	{ "Firefox",     NULL,    NULL,       1 << 1,       0,           -1 },
-	{ "qutebrowser", NULL,    NULL,       1 << 1,       0,           -1 },
-	{ "Telegram",    NULL,    NULL,       1 << 3,       0,           -1 },
-	{ "Transmission-gtk",NULL,NULL,       1 << 3,       0,           -1 },
+	/* class                instance    title       tags mask     isfloating   monitor */
+	{ "firefox",            NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "qutebrowser",        NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "Gimp",               NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "Telegram",           NULL,       NULL,       1 << 3,       0,           -1 },
+	{ "Activity - Discord", NULL,       NULL,       1 << 3,       0,           -1 },
+	{ "Transmission-gtk",   NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "Spotify",	      "spotify",  "Spotify",    1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -85,10 +87,14 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_backslash,  togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
