@@ -41,7 +41,6 @@ static const char s_base3[]         = "#fdf6e3";
 #include "/home/lucca/.cache/wal/colors-wal-dwm-real.h"
 
 /* tagging */
-//static const char *tags[] = { "", "", "", "4", "5", "6", "7", "8", "" };
 static const char *tags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
 
 static const Rule rules[] = {
@@ -51,12 +50,16 @@ static const Rule rules[] = {
 	 */
 	/* class                instance    title       tags mask     isfloating   monitor */
 	{ "firefox",            NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "vivaldi-stable",        NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "vivaldi-stable",     NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "Brave-browser",      NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "qutebrowser",        NULL,       NULL,       1 << 1,       0,           -1 },
 	{ "Gimp",               NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "krita",              NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "shotcut",            NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Telegram",           NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "Transmission-gtk",   NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "Slack",              NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Activity - Discord", NULL,       NULL,       1 << 5,       0,           -1 },
+	{ "Transmission-qt",    NULL,       NULL,       1 << 7,       0,           -1 },
 	{ "Spotify",	      "spotify",  "Spotify",    1 << 8,       0,           -1 },
 };
 
